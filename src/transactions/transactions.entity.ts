@@ -1,16 +1,23 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { User } from '../users/users.entity';
 
 @Entity()
-export class User {
+export class Transaction {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ unique: true })
-    email: string;
+    @ManyToOne(() => User, user => user.sentTransactions)
+    sender: User;
+
+    @ManyToOne(() => User, user => user.receivedTransactions)
+    receiver: User;
+
+    @Column('decimal')
+    amount: number;
+
+    @Column({ default: 'pending' }) // estados posibles: pending, success, failed.
+    status: 'pending' | 'success' | 'failed';
 
     @Column()
-    password: string;
-
-    @Column({ default: 0 })
-    balance: number;
+    createdAt: Date;
 }
