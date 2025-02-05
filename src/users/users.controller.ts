@@ -1,48 +1,54 @@
-import { Controller, Get, Post, Body, Param, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Res, UseGuards, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { sendResponse } from 'src/utils/sendResponse';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard'; // Asegúrate de que la ruta sea correcta
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+    constructor(private readonly usersService: UsersService) {}
 
+    @UseGuards(JwtAuthGuard) // Protege la ruta con el guardia JWT
     @Get()
     async findAll(@Res() res) {
         try {
             const users = await this.usersService.findAll();
-        return sendResponse(res, true, '00', null, users);
+            return sendResponse(res, true, '00', null, users);
         } catch (error) {
             return sendResponse(res, false, '01', error.message);
         }
     }
 
     @Post()
-    async create(@Body() userData, @Res() res) {
+    async create(@Body() userData: { password: string, email: string }, @Res() res) {
         try {
-        const user = await this.usersService.create(userData);
-        return sendResponse(res, true, '00', null, user);
+            const user = await this.usersService.create(userData);
+            return sendResponse(res, true, '00', null, user);
         } catch (error) {
-        return sendResponse(res, false, '01', error.message);
+            return sendResponse(res, false, '01', error.message);
         }
     }
 
-    @Get(':id')
-    async findOne(@Param('id') id: number, @Res() res) {
+    @UseGuards(JwtAuthGuard) // Protege la ruta con el guardia JWT
+    @Get('/profile')
+    async findOne(@Request() req: any, @Res() res) {
         try {
-        const user = await this.usersService.findOne(id);
-        if (!user) {
-            return sendResponse(res, false, '02'); // User not found
-        }
-        return sendResponse(res, true, '00', null, user);
+            const userId = req.user.sub; // Extrae el ID del usuario desde el token
+            const user = await this.usersService.findOne(userId);
+            if (!user) {
+                return sendResponse(res, false, '02'); // User not found
+            }
+            return sendResponse(res, true, '00', null, user);
         } catch (error) {
-        return sendResponse(res, false, '01', error.message);
+            return sendResponse(res, false, '01', error.message);
         }
     }
 
-    @Post(':id/load-balance')
-    async loadBalance(@Param('id') id: number, @Body('amount') amount: number, @Res() res) {
+    @UseGuards(JwtAuthGuard) // Protege la ruta con el guardia JWT
+    @Post('/load-balance')
+    async loadBalance(@Body('amount') amount: number, @Request() req: any, @Res() res) {
         try {
-            const user = await this.usersService.loadBalance(id, amount);
+            const userId = req.user.sub; // Extrae el ID del usuario desde el token
+            const user = await this.usersService.loadBalance(userId, amount); // Usa el ID del token o el del param
             return sendResponse(res, true, '00', null, user);
         } catch (error) {
             if (error.message === 'User not found') {
