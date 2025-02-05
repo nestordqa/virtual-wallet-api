@@ -6,19 +6,19 @@ import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
-		ConfigModule.forRoot({ isGlobal: true }),
-		TypeOrmModule.forRoot({
-			type: 'postgres',
-			host: process.env.POSTGRES_HOST,
-			port: +process.env.POSTGRES_PORT, //Plus symbol added to ensure value converting to number
-			username: process.env.POSTGRES_USER,
-			password: process.env.POSTGRES_PASSWORD,
-			database: process.env.POSTGRES_DB,
-			autoLoadEntities: true,
-			synchronize: true, // DONT USE IN PRODUCTION ENVIRONMENT!!!.
-		}),
-		UsersModule,
-		TransactionsModule,
-	],
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost', // O usa 'db' si estás dentro del contenedor Docker Compose
+      port: parseInt(process.env.POSTGRES_PORT, 10) || 5432,
+      username: process.env.POSTGRES_USER || 'postgres',
+      password: process.env.POSTGRES_PASSWORD || 'postgres',
+      database: 'postgres', // Asegúrate de que sea "wallet_db"
+      autoLoadEntities: true,
+      synchronize: true, // Solo para desarrollo, no usar en producción
+    }),
+    TransactionsModule,
+    UsersModule,
+  ],
 })
 export class AppModule {}
