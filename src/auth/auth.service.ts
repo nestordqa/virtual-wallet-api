@@ -4,7 +4,7 @@ import { User } from '../users/users.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { UserResponse } from './interfaces/user.interface';
+import { UserResponse } from '../interfaces/user.interface';
 
 @Injectable()
 export class AuthService {
@@ -24,13 +24,10 @@ export class AuthService {
     }
 
     async login(user: UserResponse) {
-        const payload = { 
-            email: user.email,
-            sub: user.id,
-            ...user // Incluir todos los datos del usuario menos la contraseña
-        };
+        const payload = { email: user.email, sub: user.id };
         return {
-            access_token: this.jwtService.sign(payload, { expiresIn: '1h' }), // Expiración de 1 hora
+            access_token: this.jwtService.sign(payload), // Generar el token
+            user
         };
     }
 }
