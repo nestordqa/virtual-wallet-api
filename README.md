@@ -1,100 +1,116 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 💳 **Wallet API**
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Una API para gestionar usuarios, transacciones y balances en una aplicación de billetera virtual. Construida con **NestJS** y **PostgreSQL**, esta API incluye autenticación JWT, documentación Swagger y un sistema de inicialización automática de datos.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🚀 **Características**
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **Gestión de Usuarios**: Crear usuarios, obtener perfiles y cargar saldo.
+- **Transacciones**: Realizar transferencias entre usuarios (CONSIDERACIONES: ACTUALMENTE EL STATUS DE LA TRANSACCION DE GENERA DE MANERA ALEATORIA, PARA FINES PRÁCTICOS Y EVALUAR VARIOS CASOS).
+- **Autenticación JWT**: Endpoints protegidos con autenticación basada en tokens.
+- **Swagger**: Documentación interactiva para explorar la API.
 
-## Project setup
+---
 
+## 🛠️ **Requisitos Previos**
+
+Antes de comenzar, asegúrate de tener instalados los siguientes programas:
+
+- [Node.js](https://nodejs.org/) (versión 16 o superior)
+- [Docker](https://www.docker.com/) y [Docker Compose](https://docs.docker.com/compose/)
+
+---
+
+## 📥 **Instalación**
+
+Sigue estos pasos para configurar y ejecutar la aplicación:
+
+### 1. Clonar el repositorio
 ```bash
-$ npm install
+git clone https://github.com/nestordqa/virtual-wallet-api
+cd virtual-wallet-api
 ```
 
-## Compile and run the project
-
+### 2. Instalar dependencias
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install --legacy-peer-deps
 ```
 
-## Run tests
-
+### 3. Crear el archivo `.env`
+Crea un archivo `.env` en la raíz del proyecto:
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+touch .env
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
+### 4. Configurar las variables de entorno
+Abre el archivo `.env` y agrega las siguientes configuraciones (Puedes agregar los valores que prefieras o creas conveniente):
+```env
+PORT=3000
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=postgres
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+⚠️ **Importante**: Asegúrate de que estas variables sean correctas; de lo contrario, la aplicación no funcionará.
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## ▶️ **Inicialización**
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Levantar la aplicación con Docker:
+```bash
+npm run docker:up
+```
 
-## Support
+Esto iniciará los contenedores para la API y PostgreSQL.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Detener los contenedores:
+```bash
+npm run docker:down
+```
+---
 
-## Stay in touch
+## 🌐 **Acceso a la API**
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- La API estará disponible en:  
+  👉 `http://localhost:3000/`
 
-## License
+- La documentación interactiva de Swagger estará disponible en:  
+  👉 `http://localhost:3000/api`
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
-# virtual-wallet-api
+---
+
+## 🛠️ **Scripts Disponibles**
+
+| Comando               | Descripción                                      |
+|-----------------------|--------------------------------------------------|
+| `npm run start`       | Inicia la aplicación localmente.                 |
+| `npm run start:dev`   | Inicia la aplicación en modo desarrollo.         |
+| `npm run build`       | Compila la aplicación.                           |
+| `npm run docker:up`   | Levanta los contenedores Docker.                 |
+| `npm run docker:down` | Detiene y elimina los contenedores Docker.       |
+
+---
+
+## ⚙️ **Tecnologías Utilizadas**
+
+- [NestJS](https://nestjs.com/) - Framework backend.
+- [PostgreSQL](https://www.postgresql.org/) - Base de datos relacional.
+- [TypeORM](https://typeorm.io/) - ORM para manejar la base de datos.
+- [Swagger](https://swagger.io/) - Documentación interactiva de APIs.
+- [Docker](https://www.docker.com/) - Contenerización para desarrollo y despliegue.
+
+---
+
+## 🤝 **Contribuciones**
+
+¡Las contribuciones son bienvenidas! Si encuentras algún problema o tienes sugerencias, por favor abre un issue o envía un pull request.
+
+---
+
+🎉 ¡Gracias por usar Wallet API! Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarme. 😊
+
+--- 

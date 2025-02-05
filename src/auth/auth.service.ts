@@ -17,7 +17,7 @@ export class AuthService {
     async validateUser(email: string, password: string): Promise<UserResponse | null> {
         const user = await this.userRepository.findOne({ where: { email } });
         if (user && (password === user.password)) {
-            const { password, ...result } = user; // Excluir la contraseña del resultado
+            const { password, ...result } = user; // Excluding password for response
             return result;
         }
         return null;
@@ -26,7 +26,7 @@ export class AuthService {
     async login(user: UserResponse) {
         const payload = { email: user.email, sub: user.id };
         return {
-            access_token: this.jwtService.sign(payload), // Generar el token
+            access_token: this.jwtService.sign(payload), // Generate token
             user
         };
     }
