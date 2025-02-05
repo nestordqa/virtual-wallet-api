@@ -21,16 +21,25 @@ export class TransactionsService {
             throw new Error('Sender or receiver not found');
         }
 
+        if (sender.id === receiver.id) {
+            throw new Error('Cannot send money to yourself');
+        }
+
         if (sender.balance < amount) {
             throw new Error('Insufficient balance');
         }
 
+        //Generate a ramdon status
+        const statuses = ['success', 'failed', 'pending'];
+        const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+
         // Crear transacción.
+        //@ts-ignore
         const transaction = this.transactionRepository.create({
             sender,
             receiver,
             amount,
-            status: 'success', // Suponiendo que la transacción es exitosa.
+            status: randomStatus,
             createdAt: new Date(),
         });
 
@@ -40,7 +49,7 @@ export class TransactionsService {
         
         await this.userRepository.save(sender);
         await this.userRepository.save(receiver);
-        
+        //@ts-ignore
         return this.transactionRepository.save(transaction);
     }
 

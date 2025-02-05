@@ -12,8 +12,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TypeOrmModule.forFeature([User]),
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'secretKey', // Cambia esto a una variable de entorno en producción
-      signOptions: { expiresIn: '1h' }, // Tiempo de expiración del token
+      secret: process.env.JWT_SECRET || 'secretKey',
+      signOptions: { expiresIn: '1h' }, // Exp time for token
     }),
   ],
   providers: [AuthService, JwtStrategy],
