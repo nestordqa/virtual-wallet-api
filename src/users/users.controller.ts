@@ -19,7 +19,7 @@ export class UsersController {
     }
 
     @Post()
-    async create(@Body() userData: any, @Res() res) {
+    async create(@Body() userData: { password: string, email: string }, @Res() res) {
         try {
             const user = await this.usersService.create(userData);
             return sendResponse(res, true, '00', null, user);
@@ -29,10 +29,11 @@ export class UsersController {
     }
 
     @UseGuards(JwtAuthGuard) // Protege la ruta con el guardia JWT
-    @Get(':id')
-    async findOne(@Param('id') id: number, @Res() res) {
+    @Get('/profile')
+    async findOne(@Request() req: any, @Res() res) {
         try {
-            const user = await this.usersService.findOne(id);
+            const userId = req.user.sub; // Extrae el ID del usuario desde el token
+            const user = await this.usersService.findOne(userId);
             if (!user) {
                 return sendResponse(res, false, '02'); // User not found
             }
@@ -43,10 +44,11 @@ export class UsersController {
     }
 
     @UseGuards(JwtAuthGuard) // Protege la ruta con el guardia JWT
-    @Post(':id/load-balance')
-    async loadBalance(@Param('id') id: number, @Body('amount') amount: number, @Res() res) {
+    @Post('/load-balance')
+    async loadBalance(@Body('amount') amount: number, @Request() req: any, @Res() res) {
         try {
-            const user = await this.usersService.loadBalance(id, amount);
+            const userId = req.user.sub; // Extrae el ID del usuario desde el token
+            const user = await this.usersService.loadBalance(userId, amount); // Usa el ID del token o el del param
             return sendResponse(res, true, '00', null, user);
         } catch (error) {
             if (error.message === 'User not found') {
