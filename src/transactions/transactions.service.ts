@@ -43,14 +43,19 @@ export class TransactionsService {
             createdAt: new Date(),
         });
 
-        // Actualizar balances.
-        sender.balance -= amount;
-        receiver.balance += amount;
-        
-        await this.userRepository.save(sender);
-        await this.userRepository.save(receiver);
         //@ts-ignore
-        return this.transactionRepository.save(transaction);
+        await this.transactionRepository.save(transaction);
+
+        // Actualizar balances solo si el estado es "success"
+        if (randomStatus === 'success') {
+            sender.balance -= amount;
+            receiver.balance += amount;
+
+            await this.userRepository.save(sender);
+            await this.userRepository.save(receiver);
+        }
+        //@ts-ignore
+        return transaction;
     }
 
     async findAllByUser(userId: number): Promise<Transaction[]> {

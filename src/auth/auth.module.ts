@@ -13,7 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'secretKey',
-      signOptions: { expiresIn: '1h' }, // Exp time for token
+      signOptions: { expiresIn: '24h' }, // Exp time for token
     }),
   ],
   providers: [AuthService, JwtStrategy],
